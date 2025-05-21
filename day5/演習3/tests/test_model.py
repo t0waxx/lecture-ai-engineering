@@ -172,17 +172,21 @@ def test_model_reproducibility(sample_data, preprocessor):
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
 
+
 def test_model_accuracy_baseline(train_model):
     """モデル精度がベースラインを下回っていないことを検証"""
     baseline_accuracy = 0.80
     model, X_test, y_test = train_model
     accuracy = accuracy_score(y_test, model.predict(X_test))
-    assert accuracy >= baseline_accuracy, f"accuracy {accuracy:.3f} < baseline {baseline_accuracy}"
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"accuracy {accuracy:.3f} < baseline {baseline_accuracy}"
 
 
 def test_model_training_time(sample_data, preprocessor):
     """学習時間が現実的か検証（例：5秒以内）"""
     import time
+
     X = sample_data.drop("Survived", axis=1)
     y = sample_data["Survived"].astype(int)
     X_train, _, y_train, _ = train_test_split(X, y, test_size=0.2, random_state=42)
